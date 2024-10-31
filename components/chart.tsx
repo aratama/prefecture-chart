@@ -1,4 +1,9 @@
-import { Population, populationSchema, PrefCode } from "@/domain/popuration";
+import {
+  Population,
+  PopulationCategory,
+  populationSchema,
+  PrefCode,
+} from "@/domain/popuration";
 import {
   LineChart,
   Line,
@@ -45,7 +50,10 @@ const fetcher = async (
   );
 };
 
-export function PopulationChart(props: { items: PrefItem[] }) {
+export function PopulationChart(props: {
+  items: PrefItem[];
+  category: PopulationCategory;
+}) {
   const populationRawResults = useSWR(props.items, fetcher);
 
   if (!populationRawResults.data) {
@@ -54,7 +62,7 @@ export function PopulationChart(props: { items: PrefItem[] }) {
 
   const populations = populationRawResults.data;
 
-  const table = toChartData(populations);
+  const table = toChartData(populations, props.category);
 
   return (
     <div>
@@ -105,14 +113,15 @@ function toChartData(
     prefCode: number;
     prefName: string;
     data: Population;
-  }[]
+  }[],
+  category: PopulationCategory
 ): Record<string, string | number>[] {
   const years: number[] = Array.from(
     new Set(
       populations
         .flatMap((p) =>
           p.data.result.data
-            .find((i) => i.label === "総人口")
+            .find((i) => i.label === category)
             ?.data.map((d) => d.year)
         )
         .filter((y) => y !== undefined)
@@ -125,11 +134,13 @@ function toChartData(
   }));
 
   for (const population of populations) {
-    for (const { data } of population.data.result.data) {
-      for (const { year, value } of data) {
-        const record =
-          table.find((item) => item.name === year.toString()) ?? {};
-        record[population.prefName] = value;
+    for (const { data, label } of population.data.result.data) {
+      if (label === category) {
+        for (const { year, value } of data) {
+          const record =
+            table.find((item) => item.name === year.toString()) ?? {};
+          record[population.prefName] = value;
+        }
       }
     }
   }

@@ -1,7 +1,13 @@
 "use client";
 
 import { PopulationChart } from "@/components/chart";
-import { PrefCode, prefectureSchema } from "@/domain/popuration";
+import {
+  Population,
+  PrefCode,
+  Prefecture,
+  prefectureSchema,
+} from "@/domain/popuration";
+import { useId } from "react";
 import useSWR from "swr";
 
 export type PrefItem = { prefName: string; prefCode: number; checked: boolean };
@@ -35,35 +41,58 @@ export function PrefectureSelect(props: {
     <div>
       {data.result.map((pref) => {
         return (
-          <span key={pref.prefCode}>
-            <input
-              type="checkbox"
-              onInput={(e) => {
-                const checkedItemSet = new Set(
-                  props.items
-                    .filter((item) => item.checked)
-                    .map((item) => item.prefCode)
-                );
-                props.onChange(
-                  data.result.map((item) => {
-                    return {
-                      prefCode: item.prefCode,
-                      prefName: item.prefName,
-                      checked:
-                        item.prefCode === pref.prefCode
-                          ? e.currentTarget.checked
-                          : checkedItemSet.has(item.prefCode),
-                    };
-                  })
-                );
-              }}
-            />
-            <label>
-              {pref.prefName}({pref.prefCode})
-            </label>
-          </span>
+          <PrefectureCheckBox
+            key={pref.prefCode}
+            items={props.items}
+            onChange={props.onChange}
+            data={data}
+            pref={pref}
+          />
         );
       })}
     </div>
+  );
+}
+
+function PrefectureCheckBox(props: {
+  items: PrefItem[];
+  onChange: (items: PrefItem[]) => void;
+  data: Prefecture;
+  pref: {
+    prefCode: number;
+    prefName: string;
+  };
+}) {
+  const { pref, data } = props;
+
+  const id = useId();
+
+  return (
+    <span key={pref.prefCode} className="pr-2">
+      <input
+        id={id}
+        type="checkbox"
+        onInput={(e) => {
+          const checkedItemSet = new Set(
+            props.items
+              .filter((item) => item.checked)
+              .map((item) => item.prefCode)
+          );
+          props.onChange(
+            data.result.map((item) => {
+              return {
+                prefCode: item.prefCode,
+                prefName: item.prefName,
+                checked:
+                  item.prefCode === pref.prefCode
+                    ? e.currentTarget.checked
+                    : checkedItemSet.has(item.prefCode),
+              };
+            })
+          );
+        }}
+      />
+      <label htmlFor={id}>{pref.prefName}</label>
+    </span>
   );
 }
