@@ -15,28 +15,19 @@ export const prefectureSchema = z.object({
 export const populationSchema = z.object({
   message: z.string().nullable(),
   result: z.object({
-    line: z.object({
-      boundaryYear: z.number().int(),
-      data: z
-        .object({
-          year: z.number().int(),
-          value: z.number().finite(),
-        })
-        .array(),
-    }),
-    bar: z.object({
-      data: z
-        .object({
-          year: z.number().int(),
-          sum: z.number(),
-          class: z
-            .object({
-              label: z.enum(["老年人口", "生産年齢人口", "年少人口"]),
-              value: z.number().finite(),
-            })
-            .array(),
-        })
-        .array(),
-    }),
+    boundaryYear: z.number().int(),
+    data: z
+      .object({
+        label: z.enum(["総人口", "年少人口", "生産年齢人口", "老年人口"]),
+        data: z
+          .object({
+            year: z.number().int(),
+            value: z.number().finite(),
+          })
+          .array(),
+      })
+      .array(),
   }),
 });
+
+export type Population = z.infer<typeof populationSchema>;

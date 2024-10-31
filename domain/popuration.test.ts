@@ -5,7 +5,7 @@ test("都道府県一覧のパース", () => {
   expect(prefectureSchema.safeParse(PREFECTURE_RESULT).success).toBe(true);
 });
 
-test("人口増減率のパース", () => {
+test("人口構成のパース", () => {
   expect(populationSchema.safeParse(POPULATION_RESULT).success).toBe(true);
 });
 
@@ -204,304 +204,298 @@ const PREFECTURE_RESULT = {
   ],
 };
 
-// https://opendata.resas-portal.go.jp/docs/api/v1/population/sum/perYear.html
+// https://opendata.resas-portal.go.jp/docs/api/v1/population/composition/perYear.html
 const POPULATION_RESULT = {
   message: null,
   result: {
-    line: {
-      boundaryYear: 2020,
-      data: [
-        {
-          year: 1985,
-          value: -0.85,
-        },
-        {
-          year: 1990,
-          value: -1.06,
-        },
-        {
-          year: 1995,
-          value: 0.25,
-        },
-        {
-          year: 2000,
-          value: -3.19,
-        },
-        {
-          year: 2005,
-          value: -5.57,
-        },
-        {
-          year: 2010,
-          value: -5.46,
-        },
-        {
-          year: 2015,
-          value: -6.92,
-        },
-        {
-          year: 2020,
-          value: -8.19,
-        },
-        {
-          year: 2025,
-          value: -9.35,
-        },
-        {
-          year: 2030,
-          value: -9.73,
-        },
-        {
-          year: 2035,
-          value: -10.42,
-        },
-        {
-          year: 2040,
-          value: -11.26,
-        },
-        {
-          year: 2045,
-          value: -11.96,
-        },
-      ],
-    },
-    bar: {
-      data: [
-        {
-          year: 1985,
-          sum: -0.85,
-          class: [
-            {
-              label: "老年人口",
-              value: 9.81,
-            },
-            {
-              label: "生産年齢人口",
-              value: -1.47,
-            },
-            {
-              label: "年少人口",
-              value: -4.7,
-            },
-          ],
-        },
-        {
-          year: 1990,
-          sum: -1.06,
-          class: [
-            {
-              label: "老年人口",
-              value: 22.27,
-            },
-            {
-              label: "生産年齢人口",
-              value: -1.11,
-            },
-            {
-              label: "年少人口",
-              value: -15.27,
-            },
-          ],
-        },
-        {
-          year: 1995,
-          sum: 0.25,
-          class: [
-            {
-              label: "老年人口",
-              value: 21.82,
-            },
-            {
-              label: "生産年齢人口",
-              value: -1.17,
-            },
-            {
-              label: "年少人口",
-              value: -13.93,
-            },
-          ],
-        },
-        {
-          year: 2000,
-          sum: -3.19,
-          class: [
-            {
-              label: "老年人口",
-              value: 13.45,
-            },
-            {
-              label: "生産年齢人口",
-              value: -5.62,
-            },
-            {
-              label: "年少人口",
-              value: -14.4,
-            },
-          ],
-        },
-        {
-          year: 2005,
-          sum: -5.57,
-          class: [
-            {
-              label: "老年人口",
-              value: 5.84,
-            },
-            {
-              label: "生産年齢人口",
-              value: -7.4,
-            },
-            {
-              label: "年少人口",
-              value: -16.54,
-            },
-          ],
-        },
-        {
-          year: 2010,
-          sum: -5.46,
-          class: [
-            {
-              label: "老年人口",
-              value: 4.43,
-            },
-            {
-              label: "生産年齢人口",
-              value: -9.16,
-            },
-            {
-              label: "年少人口",
-              value: -8.38,
-            },
-          ],
-        },
-        {
-          year: 2015,
-          sum: -6.92,
-          class: [
-            {
-              label: "老年人口",
-              value: 8.27,
-            },
-            {
-              label: "生産年齢人口",
-              value: -13.28,
-            },
-            {
-              label: "年少人口",
-              value: -13.39,
-            },
-          ],
-        },
-        {
-          year: 2020,
-          sum: -8.19,
-          class: [
-            {
-              label: "老年人口",
-              value: 3.95,
-            },
-            {
-              label: "生産年齢人口",
-              value: -14.11,
-            },
-            {
-              label: "年少人口",
-              value: -18.17,
-            },
-          ],
-        },
-        {
-          year: 2025,
-          sum: -9.35,
-          class: [
-            {
-              label: "老年人口",
-              value: -4.35,
-            },
-            {
-              label: "生産年齢人口",
-              value: -11.95,
-            },
-            {
-              label: "年少人口",
-              value: -12.17,
-            },
-          ],
-        },
-        {
-          year: 2030,
-          sum: -9.73,
-          class: [
-            {
-              label: "老年人口",
-              value: -6.13,
-            },
-            {
-              label: "生産年齢人口",
-              value: -11.79,
-            },
-            {
-              label: "年少人口",
-              value: -14.22,
-            },
-          ],
-        },
-        {
-          year: 2035,
-          sum: -10.42,
-          class: [
-            {
-              label: "老年人口",
-              value: -7.46,
-            },
-            {
-              label: "生産年齢人口",
-              value: -11.96,
-            },
-            {
-              label: "年少人口",
-              value: -15.88,
-            },
-          ],
-        },
-        {
-          year: 2040,
-          sum: -11.26,
-          class: [
-            {
-              label: "老年人口",
-              value: -3.96,
-            },
-            {
-              label: "生産年齢人口",
-              value: -17.52,
-            },
-            {
-              label: "年少人口",
-              value: -13.48,
-            },
-          ],
-        },
-        {
-          year: 2045,
-          sum: -11.96,
-          class: [
-            {
-              label: "老年人口",
-              value: -8.19,
-            },
-            {
-              label: "生産年齢人口",
-              value: -15.66,
-            },
-            {
-              label: "年少人口",
-              value: -13.64,
-            },
-          ],
-        },
-      ],
-    },
+    boundaryYear: 2020,
+    data: [
+      {
+        label: "総人口",
+        data: [
+          {
+            year: 1980,
+            value: 12817,
+          },
+          {
+            year: 1985,
+            value: 12707,
+          },
+          {
+            year: 1990,
+            value: 12571,
+          },
+          {
+            year: 1995,
+            value: 12602,
+          },
+          {
+            year: 2000,
+            value: 12199,
+          },
+          {
+            year: 2005,
+            value: 11518,
+          },
+          {
+            year: 2010,
+            value: 10888,
+          },
+          {
+            year: 2015,
+            value: 10133,
+          },
+          {
+            year: 2020,
+            value: 9302,
+          },
+          {
+            year: 2025,
+            value: 8431,
+          },
+          {
+            year: 2030,
+            value: 7610,
+          },
+          {
+            year: 2035,
+            value: 6816,
+          },
+          {
+            year: 2040,
+            value: 6048,
+          },
+          {
+            year: 2045,
+            value: 5324,
+          },
+        ],
+      },
+      {
+        label: "年少人口",
+        data: [
+          {
+            year: 1980,
+            value: 2906,
+            rate: 22.67,
+          },
+          {
+            year: 1985,
+            value: 2769,
+            rate: 21.79,
+          },
+          {
+            year: 1990,
+            value: 2346,
+            rate: 18.66,
+          },
+          {
+            year: 1995,
+            value: 2019,
+            rate: 16.02,
+          },
+          {
+            year: 2000,
+            value: 1728,
+            rate: 14.17,
+          },
+          {
+            year: 2005,
+            value: 1442,
+            rate: 12.52,
+          },
+          {
+            year: 2010,
+            value: 1321,
+            rate: 12.13,
+          },
+          {
+            year: 2015,
+            value: 1144,
+            rate: 11.29,
+          },
+          {
+            year: 2020,
+            value: 936,
+            rate: 10.06,
+          },
+          {
+            year: 2025,
+            value: 822,
+            rate: 9.75,
+          },
+          {
+            year: 2030,
+            value: 705,
+            rate: 9.26,
+          },
+          {
+            year: 2035,
+            value: 593,
+            rate: 8.7,
+          },
+          {
+            year: 2040,
+            value: 513,
+            rate: 8.48,
+          },
+          {
+            year: 2045,
+            value: 443,
+            rate: 8.32,
+          },
+        ],
+      },
+      {
+        label: "生産年齢人口",
+        data: [
+          {
+            year: 1980,
+            value: 8360,
+            rate: 65.23,
+          },
+          {
+            year: 1985,
+            value: 8236,
+            rate: 64.81,
+          },
+          {
+            year: 1990,
+            value: 8144,
+            rate: 64.78,
+          },
+          {
+            year: 1995,
+            value: 8048,
+            rate: 63.86,
+          },
+          {
+            year: 2000,
+            value: 7595,
+            rate: 62.26,
+          },
+          {
+            year: 2005,
+            value: 7032,
+            rate: 61.05,
+          },
+          {
+            year: 2010,
+            value: 6387,
+            rate: 58.66,
+          },
+          {
+            year: 2015,
+            value: 5538,
+            rate: 54.65,
+          },
+          {
+            year: 2020,
+            value: 4756,
+            rate: 51.13,
+          },
+          {
+            year: 2025,
+            value: 4187,
+            rate: 49.66,
+          },
+          {
+            year: 2030,
+            value: 3693,
+            rate: 48.53,
+          },
+          {
+            year: 2035,
+            value: 3251,
+            rate: 47.7,
+          },
+          {
+            year: 2040,
+            value: 2681,
+            rate: 44.33,
+          },
+          {
+            year: 2045,
+            value: 2261,
+            rate: 42.47,
+          },
+        ],
+      },
+      {
+        label: "老年人口",
+        data: [
+          {
+            year: 1980,
+            value: 1550,
+            rate: 12.09,
+          },
+          {
+            year: 1985,
+            value: 1702,
+            rate: 13.39,
+          },
+          {
+            year: 1990,
+            value: 2081,
+            rate: 16.55,
+          },
+          {
+            year: 1995,
+            value: 2535,
+            rate: 20.12,
+          },
+          {
+            year: 2000,
+            value: 2876,
+            rate: 23.58,
+          },
+          {
+            year: 2005,
+            value: 3044,
+            rate: 26.43,
+          },
+          {
+            year: 2010,
+            value: 3179,
+            rate: 29.2,
+          },
+          {
+            year: 2015,
+            value: 3442,
+            rate: 33.97,
+          },
+          {
+            year: 2020,
+            value: 3578,
+            rate: 38.46,
+          },
+          {
+            year: 2025,
+            value: 3422,
+            rate: 40.59,
+          },
+          {
+            year: 2030,
+            value: 3212,
+            rate: 42.21,
+          },
+          {
+            year: 2035,
+            value: 2972,
+            rate: 43.6,
+          },
+          {
+            year: 2040,
+            value: 2854,
+            rate: 47.19,
+          },
+          {
+            year: 2045,
+            value: 2620,
+            rate: 49.21,
+          },
+        ],
+      },
+    ],
   },
 };

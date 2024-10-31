@@ -1,44 +1,186 @@
-import { populationSchema, PrefCode } from "@/domain/popuration";
-import { LineChart, Line } from "recharts";
+import { Population, populationSchema, PrefCode } from "@/domain/popuration";
+import {
+  LineChart,
+  Line,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+} from "recharts";
 import useSWR from "swr";
+import { PrefItem } from "./prefecture-select";
 
-export const fetcher = (url: string) =>
-  fetch(url, {
-    headers: {
-      "X-API-KEY": process.env.NEXT_PUBLIC_RESAS_API_KEY ?? "",
-    },
-  }).then((r) => r.json());
+// https://opendata.resas-portal.go.jp/docs/api/v1/population/composition/perYear.html
+const fetcher = async (
+  items: PrefItem[]
+): Promise<{ prefCode: number; prefName: string; data: Population }[]> => {
+  return await Promise.all(
+    items
+      .filter((item) => item.checked)
+      .map(async ({ prefCode, prefName }) => {
+        const params = new URLSearchParams({
+          prefCode: prefCode.toString(),
+          cityCode: "-",
+        });
 
-export function PopulationChart(props: { prefCodes: PrefCode[] }) {
-  const prefCode = props.prefCodes[0];
+        const url = `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear
+?${params.toString()}`;
+        const r = await fetch(url, {
+          headers: {
+            "X-API-KEY": process.env.NEXT_PUBLIC_RESAS_API_KEY ?? "",
+          },
+        });
 
-  if (!prefCode) {
-    return null;
+        const json = await r.json();
+
+        const data = populationSchema.parse(json);
+
+        return {
+          prefCode,
+          prefName,
+          data,
+        };
+      })
+  );
+};
+
+export function PopulationChart(props: { items: PrefItem[] }) {
+  const populationRawResults = useSWR(props.items, fetcher);
+
+  if (!populationRawResults.data) {
+    return;
   }
 
-  // https://opendata.resas-portal.go.jp/docs/api/v1/population/sum/perYear.html
-  const params = new URLSearchParams({
-    prefCode: prefCode.toString(),
-    cityCode: "-",
-  });
-  const population = useSWR(
-    `https://opendata.resas-portal.go.jp/api/v1/population/sum/perYear?${params.toString()}`,
-    fetcher
-  );
+  const populations = populationRawResults.data;
 
-  const populationParsed = populationSchema.safeParse(population.data);
-
-  const data = populationParsed.data?.result.line.data.map((data) => {
-    return { name: data.year.toString(), uv: data.value };
-  });
+  const table = toChartData(populations);
 
   return (
-    data && (
-      <div>
-        <LineChart width={400} height={400} data={data}>
-          <Line type="monotone" dataKey="uv" stroke="#8884d8" />
-        </LineChart>
-      </div>
-    )
+    <div>
+      <LineChart
+        width={800}
+        height={400}
+        data={table}
+        margin={{
+          top: 50,
+          right: 80,
+          left: 50,
+          bottom: 50,
+        }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis
+          dataKey="name"
+          label={{
+            value: "人口数",
+            position: "right",
+            offset: 30,
+          }}
+        />
+        <YAxis
+          label={{
+            value: "年度",
+            position: "top",
+            offset: 20,
+          }}
+        />
+        <Tooltip />
+        <Legend />
+        {populations.map(({ prefCode, prefName }, index) => (
+          <Line
+            key={prefCode}
+            type="monotone"
+            dataKey={prefName.toString()}
+            stroke={colorNames[index]}
+          />
+        ))}
+      </LineChart>
+    </div>
   );
 }
+
+function toChartData(
+  populations: {
+    prefCode: number;
+    prefName: string;
+    data: Population;
+  }[]
+): Record<string, string | number>[] {
+  const years: number[] = Array.from(
+    new Set(
+      populations
+        .flatMap((p) =>
+          p.data.result.data
+            .find((i) => i.label === "総人口")
+            ?.data.map((d) => d.year)
+        )
+        .filter((y) => y !== undefined)
+    )
+  );
+  years.sort();
+
+  const table: Record<string, number | string>[] = years.map((year) => ({
+    name: year.toString(),
+  }));
+
+  for (const population of populations) {
+    for (const { data } of population.data.result.data) {
+      for (const { year, value } of data) {
+        const record =
+          table.find((item) => item.name === year.toString()) ?? {};
+        record[population.prefName] = value;
+      }
+    }
+  }
+
+  return table;
+}
+
+// この色名はChatGPTに指示して生成させたものです
+const colorNames = [
+  "Black",
+  "Blue",
+  "Green",
+  "Cyan",
+  "Red",
+  "Magenta",
+  "DarkGray",
+  "White",
+  "Navy",
+  "DarkBlue",
+  "DarkGreen",
+  "Teal",
+  "DarkCyan",
+  "MediumGreen",
+  "Lime",
+  "LightGreen",
+  "LightCyan",
+  "Maroon",
+  "DarkRed",
+  "Olive",
+  "DarkSlateGray",
+  "LightSlateGray",
+  "SlateGray",
+  "Gray",
+  "FireBrick",
+  "DarkOrange",
+  "Orange",
+  "Gold",
+  "Khaki",
+  "MediumOrchid",
+  "PaleVioletRed",
+  "LightGoldenrodYellow",
+  "PaleGreen",
+  "MediumTurquoise",
+  "Turquoise",
+  "MediumSlateBlue",
+  "LightCoral",
+  "Lavender",
+  "MistyRose",
+  "LightPink",
+  "IndianRed",
+  "CornflowerBlue",
+  "SteelBlue",
+  "PowderBlue",
+];
