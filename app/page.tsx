@@ -3,7 +3,7 @@
 import { CategorySelect } from "@/components/category-select";
 import { PopulationChart } from "@/components/chart";
 import { PrefectureSelect, PrefItem } from "@/components/prefecture-select";
-import { PopulationCategory, PrefCode } from "@/domain/popuration";
+import { PopulationCategory } from "@/domain/popuration";
 import { useState } from "react";
 
 export default function Home() {

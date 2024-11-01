@@ -1,12 +1,6 @@
 "use client";
 
-import { PopulationChart } from "@/components/chart";
-import {
-  Population,
-  PrefCode,
-  Prefecture,
-  prefectureSchema,
-} from "@/domain/popuration";
+import { Prefecture, prefectureSchema } from "@/domain/popuration";
 import { useId } from "react";
 import useSWR from "swr";
 

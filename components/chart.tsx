@@ -2,7 +2,6 @@ import {
   Population,
   PopulationCategory,
   populationSchema,
-  PrefCode,
 } from "@/domain/popuration";
 import {
   LineChart,
