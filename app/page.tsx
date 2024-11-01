@@ -1,8 +1,10 @@
 "use client";
 
 import { CategorySelect } from "@/components/category-select";
-import { PopulationChart } from "@/components/chart";
+import { PopulationChart } from "@/components/pupulation-chart";
+import { Footer } from "@/components/footer";
 import { PrefectureSelect, PrefItem } from "@/components/prefecture-select";
+import { PageTitle } from "@/components/page-title";
 import { PopulationCategory } from "@/domain/popuration";
 import { useState } from "react";
 
@@ -12,9 +14,9 @@ export default function Home() {
   const [category, setCategory] = useState<PopulationCategory>("総人口");
 
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2">
-        <h1>都道府県別総人口推移</h1>
+    <div className="">
+      <main className="flex flex-col gap-8">
+        <PageTitle />
 
         <PrefectureSelect
           items={prefItem}
@@ -27,7 +29,8 @@ export default function Home() {
 
         <PopulationChart items={prefItem} category={category} />
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center"></footer>
+
+      <Footer />
     </div>
   );
 }

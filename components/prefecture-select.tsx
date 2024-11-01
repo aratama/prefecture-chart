@@ -3,6 +3,7 @@
 import { Prefecture, prefectureSchema } from "@/domain/popuration";
 import { useId } from "react";
 import useSWR from "swr";
+import { PrefectureCheckBox } from "./prefecture-checkbox";
 
 export type PrefItem = { prefName: string; prefCode: number; checked: boolean };
 
@@ -32,7 +33,7 @@ export function PrefectureSelect(props: {
   }
 
   return (
-    <div>
+    <div className=" grid grid-cols-3 p-2">
       {data.result.map((pref) => {
         return (
           <PrefectureCheckBox
@@ -45,48 +46,5 @@ export function PrefectureSelect(props: {
         );
       })}
     </div>
-  );
-}
-
-function PrefectureCheckBox(props: {
-  items: PrefItem[];
-  onChange: (items: PrefItem[]) => void;
-  data: Prefecture;
-  pref: {
-    prefCode: number;
-    prefName: string;
-  };
-}) {
-  const { pref, data } = props;
-
-  const id = useId();
-
-  return (
-    <span key={pref.prefCode} className="pr-2">
-      <input
-        id={id}
-        type="checkbox"
-        onInput={(e) => {
-          const checkedItemSet = new Set(
-            props.items
-              .filter((item) => item.checked)
-              .map((item) => item.prefCode)
-          );
-          props.onChange(
-            data.result.map((item) => {
-              return {
-                prefCode: item.prefCode,
-                prefName: item.prefName,
-                checked:
-                  item.prefCode === pref.prefCode
-                    ? e.currentTarget.checked
-                    : checkedItemSet.has(item.prefCode),
-              };
-            })
-          );
-        }}
-      />
-      <label htmlFor={id}>{pref.prefName}</label>
-    </span>
   );
 }

@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Population,
   PopulationCategory,
@@ -11,6 +13,7 @@ import {
   YAxis,
   Tooltip,
   Legend,
+  ResponsiveContainer,
 } from "recharts";
 import useSWR from "swr";
 import { PrefItem } from "./prefecture-select";
@@ -65,44 +68,46 @@ export function PopulationChart(props: {
 
   return (
     <div>
-      <LineChart
-        width={800}
-        height={400}
-        data={table}
-        margin={{
-          top: 50,
-          right: 80,
-          left: 50,
-          bottom: 50,
-        }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis
-          dataKey="name"
-          label={{
-            value: "人口数",
-            position: "right",
-            offset: 30,
+      <ResponsiveContainer width="100%" height={800}>
+        <LineChart
+          width={800}
+          height={400}
+          data={table}
+          margin={{
+            top: 50,
+            right: 80,
+            left: 50,
+            bottom: 50,
           }}
-        />
-        <YAxis
-          label={{
-            value: "年度",
-            position: "top",
-            offset: 20,
-          }}
-        />
-        <Tooltip />
-        <Legend />
-        {populations.map(({ prefCode, prefName }, index) => (
-          <Line
-            key={prefCode}
-            type="monotone"
-            dataKey={prefName.toString()}
-            stroke={colorNames[index]}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis
+            dataKey="name"
+            label={{
+              value: "人口数",
+              position: "right",
+              offset: 30,
+            }}
           />
-        ))}
-      </LineChart>
+          <YAxis
+            label={{
+              value: "年度",
+              position: "top",
+              offset: 20,
+            }}
+          />
+          <Tooltip />
+          <Legend />
+          {populations.map(({ prefCode, prefName }, index) => (
+            <Line
+              key={prefCode}
+              type="monotone"
+              dataKey={prefName.toString()}
+              stroke={colorNames[index]}
+            />
+          ))}
+        </LineChart>
+      </ResponsiveContainer>
     </div>
   );
 }

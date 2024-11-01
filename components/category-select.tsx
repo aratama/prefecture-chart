@@ -12,6 +12,7 @@ export function CategorySelect(props: {
 }) {
   return (
     <select
+      className=" border w-full"
       onChange={(e) => {
         props.onChange(populationCategorySchema.parse(e.currentTarget.value));
       }}
