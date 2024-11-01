@@ -1,7 +1,6 @@
 "use client";
 
-import { Prefecture, prefectureSchema } from "@/domain/popuration";
-import { useId } from "react";
+import { prefectureSchema } from "@/domain/popuration";
 import useSWR from "swr";
 import { PrefectureCheckBox } from "./prefecture-checkbox";
 

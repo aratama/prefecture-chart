@@ -6,14 +6,14 @@ import {
   populationSchema,
 } from "@/domain/popuration";
 import {
-  LineChart,
-  Line,
   CartesianGrid,
+  Legend,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
 } from "recharts";
 import useSWR from "swr";
 import { PrefItem } from "./prefecture-select";

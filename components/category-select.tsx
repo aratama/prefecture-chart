@@ -1,9 +1,9 @@
 "use client";
 
 import {
+  labelValues,
   PopulationCategory,
   populationCategorySchema,
-  labelValues,
 } from "@/domain/popuration";
 
 export function CategorySelect(props: {
